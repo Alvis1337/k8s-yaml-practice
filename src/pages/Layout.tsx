@@ -10,6 +10,7 @@ const Layout = () => {
         }}>
             <Outlet/>
         </Grid>
+
     )
 }
 
