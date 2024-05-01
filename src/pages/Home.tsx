@@ -27,7 +27,7 @@ const Home = () => {
 
     const setSolved = (test: { name: string; yaml?: string; description?: string; solved?: boolean; }) => {
         const newTestList = testList.map((t) => {
-            if(t.name === test.name){
+            if (t.name === test.name) {
                 t.solved = true
             }
             return t
@@ -44,10 +44,10 @@ const Home = () => {
     }
 
     const newTest = () => {
-            //     find a test from the list that is not solved
-            //     set that test
+        //     find a test from the list that is not solved
+        //     set that test
         const unsolvedTests = getUnsolvedTests()
-        if(unsolvedTests.length > 0){
+        if (unsolvedTests.length > 0) {
             setTest(unsolvedTests[0])
             setInputValue('')
         } else {
@@ -69,27 +69,48 @@ const Home = () => {
         }}>
             {getUnsolvedTests().length > 0 ? (
                 <>
-                    <Grid item xs={12} sx={{
-                        py: 2
-                    }}>
-                        <Typography variant={"body1"}>
-                            {getUnsolvedTests().length} tests remaining
-                        </Typography>
-                        {test.name && <Typography variant="h2">
-                                {test.name}
-                            </Typography>}
-                    </Grid>
-
-                    <Grid item xs={8} sx={{
-                        py: 2
-                    }}>
-                        {test.description ? <Typography variant="body1">
-                                {test.description}
-                            </Typography> :
-                                <Button variant="contained" onClick={() => startTest()}>Begin</Button>
-                        }
-                    </Grid>
-
+                    {test.description ?
+                        <>
+                            <Grid container sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}>
+                                <Grid item xs={3} sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    py: 2
+                                }}>
+                                    <Typography variant={"body1"}>
+                                        {getUnsolvedTests().length} tests remaining
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={3} sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    py: 2
+                                }}>
+                                    <Button variant="contained" onClick={() => resetTestList()}>Reset</Button>
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={8} sx={{
+                                py: 2
+                            }}>
+                                <Typography variant="body1">
+                                    {test.description}
+                                </Typography>
+                            </Grid>
+                        </>
+                        :
+                        <Grid item xs={8} sx={{
+                            py: 2
+                        }}>
+                            <Button variant="contained" onClick={() => startTest()}>Begin</Button>
+                        </Grid>
+                    }
 
                     <Grid item xs={12} sx={{
                         py: 2,
@@ -111,7 +132,7 @@ const Home = () => {
                     <Grid item xs={12} sx={{
                         py: 2
                     }}>
-                        {test.solved && <Typography variant="h2" color={'green'}>Correct</Typography> }
+                        {test.solved && <Typography variant="h2" color={'green'}>Correct</Typography>}
                     </Grid>
 
                     {!test.solved ? (
