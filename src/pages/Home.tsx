@@ -16,9 +16,6 @@ const Home = () => {
     })
     const [testList, setTestList] = useState(yamlTests)
 
-    useEffect(() => {
-        setTestList(yamlTests)
-    }, []);
 
     useEffect(() => {
         const randomIndex = Math.floor(Math.random() * testList.length)
@@ -26,21 +23,30 @@ const Home = () => {
     }, [testList]);
 
     useEffect(() => {
-        if (test) {
-            setTest({
-                ...test,
-                solved: test.yaml === inputValue
+        if(inputValue === test.yaml){
+            const newTestList = testList.map((t) => {
+                if(t.name === test.name){
+                    t.solved = true
+                }
+                return t
             })
+            setTestList(newTestList)
         }
-    }, [inputValue]);
+    }, [inputValue, test, testList]);
 
     const newTest = () => {
         setInputValue('')
         if (!test) {
             setTestList(yamlTests)
         } else {
-            setTestList(testList.filter((t) => t.name !== test.name))
+            //     find a test from the list that is not solved
+            const newTestList = testList.filter((t) => !t.solved)
+            setTestList(newTestList)
         }
+    }
+
+    const getUnsolvedTests = () => {
+        return testList.filter((t) => !t.solved)
     }
 
     return (
@@ -56,7 +62,7 @@ const Home = () => {
                         py: 2
                     }}>
                         <Typography variant={"body1"}>
-                            {testList.length} tests remaining
+                            {getUnsolvedTests().length} tests remaining
                         </Typography>
                         {test.name ? <Typography variant="h2">
                                 {test.name}

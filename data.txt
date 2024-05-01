@@ -20,32 +20,32 @@ spec:
         ports:
         - containerPort: 80
 
-	a.	apiVersion: apps/v1
-		kind: Deployment
-		metadata:
-		  name: database
-		  labels:
-		    app: database
-		spec:
-		  replicas: 3
-		  selector:
-		    matchLabels:
-		      app: database
-		  template:
-		    metadata:
-		      labels:
-		        app: database
-		    spec:
-		      containers:
-		        - name: nginx
-		          image: nginx:1.14.2
-		          ports:
-		            - containerPort: 80
-		      tolerations:
-		        - key: "dedicated"
-		          operator: "Equal"
-		          value: "database"
-		          effect: "NoSchedule"
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database
+  labels:
+    app: database
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+      tolerations:
+        - key: "dedicated"
+          operator: "Equal"
+          value: "database"
+          effect: "NoSchedule"
 
 apiVersion: apps/v1
 kind: Deployment
@@ -69,15 +69,15 @@ spec:
           ports:
             - containerPort: 80
 
-	i.	apiVersion: v1
-			kind: Secret
-			metadata:
-			  name: name
-			  namespace: default
-			db-credentials:
-			  username: testuser
-			  password: testpass
-			type: Opaque
+apiVersion: v1
+kind: Secret
+metadata:
+  name: name
+  namespace: default
+db-credentials:
+  username: testuser
+  password: testpass
+type: Opaque
 
 apiVersion: v1
 kind: Pod
@@ -284,22 +284,6 @@ spec:
       - name: nginx
         image: nginx:latest
 
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: backup-job
-spec:
-  template:
-    metadata:
-      labels:
-        app: backup
-    spec:
-      containers:
-      - name: etcd-backup
-        image: <your-etcd-backup-image>
-        command: ["./backup-script.sh"]
-      restartPolicy: OnFailure
-
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -346,29 +330,6 @@ spec:
     volumeMounts:
     - mountPath: /usr/share/nginx/html
       name: vol
-
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-port-from-namespace
-  namespace: internal
-spec:
-  podSelector: {}
-  policyTypes:
-  - Ingress
-  ingress:
-  - from:
-    # PART 1 - ALLOW PODS WITHIN SAME NAMESPACE ON PORT 80
-    - podSelector: {}
-
-    # PART 2 - ALLOW PODS FROM CORP NAMESPACE
-    - namespaceSelector:
-        matchLabels:
-          project: corp-bar
-
-    ports:
-    - protocol: TCP
-      port: 80
 
 apiVersion: v1
 kind: PersistentVolume
@@ -446,8 +407,6 @@ data:
   apiEndpoint: "https://api.staging.example.com"
   featureFlags: "enabled"
   environment: "staging"
-
-Now create the deployment manifest that mounts said configmap;
 
 apiVersion: apps/v1
 kind: Deployment
