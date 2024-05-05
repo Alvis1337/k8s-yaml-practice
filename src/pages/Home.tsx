@@ -67,8 +67,15 @@ const Home = () => {
             justifyContent: 'center',
             alignItems: 'center',
         }}>
-            {test.description === '' ? <TestBegin startTestFunc={startTest}/> : (
-                getUnsolvedTests(yamlTests).length > 0 ? (
+            <Grid item xs={12} sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                py: 2
+            }}>
+                {test.description === '' ? <TestBegin startTestFunc={startTest}/> : (
+                    getUnsolvedTests(yamlTests).length > 0 ? (
                         <TestMain
                             yamlInput={inputValue}
                             setYamlInput={setInputValue}
@@ -81,7 +88,9 @@ const Home = () => {
                     ) : (
                         <TestsSolved resetTestListFunc={resetTestList}/>
                     )
-            )}
+                )}
+            </Grid>
+
         </Grid>
     )
 }

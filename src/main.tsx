@@ -8,13 +8,28 @@ import '@fontsource/roboto/700.css';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import Home from "./pages/Home.tsx";
+import Layout from "./pages/Layout.tsx";
 
 const router = createBrowserRouter([
     {
-        path: '/',
-        element: <Home/>,
-    }
-])
+        path: "/",
+        element: <Layout/>,
+        loader: async () => {
+            return null
+        },
+        children: [
+            {
+                path: "/",
+                index: true,
+                element: <Home/>,
+                loader: async () => {
+                    return null
+                },
+            },
+        ],
+    },
+]);
+
 
 const theme = createTheme({
     // create my own custom typography variant

@@ -4,6 +4,7 @@ import {yamlTests} from "../utils/yamlTests.tsx";
 import AceEditor from "react-ace";
 import 'ace-builds/src-noconflict/mode-yaml';
 import 'ace-builds/src-noconflict/theme-monokai';
+
 interface TestMainProps {
     yamlInput: string;
     setYamlInput: (value: string) => void;
@@ -20,7 +21,15 @@ interface TestMainProps {
     solveAllTestsFunc: () => void;
 }
 
-const TestMain = ({ yamlInput, setYamlInput, yamlTest, setSolvedFunc, newTestFunc, resetTestListFunc, solveAllTestsFunc }: TestMainProps) => {
+const TestMain = ({
+                      yamlInput,
+                      setYamlInput,
+                      yamlTest,
+                      setSolvedFunc,
+                      newTestFunc,
+                      resetTestListFunc,
+                      solveAllTestsFunc
+                  }: TestMainProps) => {
     const inputValue = yamlInput
     const setInputValue = setYamlInput
     const resetTestList = resetTestListFunc
@@ -29,50 +38,69 @@ const TestMain = ({ yamlInput, setYamlInput, yamlTest, setSolvedFunc, newTestFun
     const newTest = newTestFunc
     const solveAllTests = solveAllTestsFunc
 
-    return (
-        <>
-            <Grid container sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
+    const TopButtons = () => {
+        return (
+            <Grid item xs={12} sx={{
+                width: '100%'
             }}>
-                <Grid item xs={3} sx={{
+                <Grid container sx={{
                     display: 'flex',
+                    flexDirection: 'row',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    py: 2
+                    width: '100%',
                 }}>
-                    <Typography variant={"body1"}>
-                        {getUnsolvedTests(yamlTests).length} tests remaining
-                    </Typography>
-                </Grid>
-                <Grid item xs={3} sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    py: 2
-                }}>
-                    <Button variant="contained" onClick={() => resetTestList()}>Reset</Button>
-                </Grid>
-                <Grid item xs={3} sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    py: 2
-                }}>
-                    <Button variant="contained" onClick={() => solveAllTests()}>Solve All</Button>
+                    <Grid item xs={3} sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        py: 2
+                    }}>
+                        <Typography variant={"body1"}>
+                            {getUnsolvedTests(yamlTests).length} tests remaining
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={3} sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        py: 2
+                    }}>
+                        <Button variant="contained" onClick={() => resetTestList()}>Reset</Button>
+                    </Grid>
+                    <Grid item xs={3} sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        py: 2
+                    }}>
+                        <Button variant="contained" onClick={() => solveAllTests()}>Solve All</Button>
+                    </Grid>
                 </Grid>
             </Grid>
+        )
+    }
+
+    const Description = () => {
+        return (
             <Grid item xs={8} sx={{
-                py: 2
+                justifyContent: 'center',
+                alignItems: 'center',
+                display: 'flex'
             }}>
-                <Typography variant="body1">
+                <Typography variant="body1" textAlign={"center"}>
                     {test.description}
                 </Typography>
             </Grid>
+        )
+    }
+
+    const Editor = () => {
+        return (
             <Grid item xs={12} sx={{
-                py: 2,
+                justifyContent: 'center',
+                alignItems: 'center',
+                display: 'flex'
             }}>
                 <AceEditor
                     mode="yaml"
@@ -88,13 +116,25 @@ const TestMain = ({ yamlInput, setYamlInput, yamlTest, setSolvedFunc, newTestFun
                 />
 
             </Grid>
+        )
+    }
+
+    const AnswerCorrect = () => {
+        return (
             <Grid item xs={12} sx={{
-                py: 2
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
             }}>
                 {test.solved && <Typography variant="h2" color={'green'}>Correct</Typography>}
             </Grid>
+        )
+    }
 
-            {!test.solved ? (
+    const BottomButtons = () => {
+        if(!test.solved) {
+            return (
                 <Grid container sx={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -114,7 +154,6 @@ const TestMain = ({ yamlInput, setYamlInput, yamlTest, setSolvedFunc, newTestFun
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        py: 2
                     }}>
                         <Button variant="contained" onClick={() => setInputValue('')}>Clear</Button>
                     </Grid>
@@ -122,23 +161,38 @@ const TestMain = ({ yamlInput, setYamlInput, yamlTest, setSolvedFunc, newTestFun
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        py: 2
                     }}>
                         <Button variant="contained"
                                 onClick={() => checkAnswer(inputValue, test.yaml) ? setSolved(test) : null}>Check</Button>
                     </Grid>
                 </Grid>
-            ) : (
+            )
+        } else {
+            return (
                 <Grid item xs={12} sx={{
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    py: 2
                 }}>
                     <Button variant="contained" onClick={() => newTest()}>Next</Button>
                 </Grid>
-            )}
-        </>
+            )
+        }
+    }
+
+    return (
+        <Grid container sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+        }} spacing={2}>
+            <TopButtons/>
+            <Description/>
+            <Editor/>
+            <AnswerCorrect/>
+            <BottomButtons/>
+        </Grid>
     )
 }
 
