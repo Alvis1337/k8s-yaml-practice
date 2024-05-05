@@ -95,7 +95,6 @@ const Home = () => {
                             yamlTest={renderedTest}
                             setSolvedFunc={setSolved}
                             newTestFunc={newTest}
-                            resetTestListFunc={resetTestList}
                             yamlTests={testList}
                         />
                     ) : (

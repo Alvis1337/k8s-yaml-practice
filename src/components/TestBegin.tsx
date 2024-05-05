@@ -16,7 +16,7 @@ const TestBegin = ({startTestFunc}: TestBeginProps) => {
                     correct it will say "Correct" in green letters. If it is incorrect, the screen will not
                     change. To solve the question click the "Fill" button to see the solution. To move on
                     from the current question and save it for later, press the "Next" button. The number of
-                    unsolved questions will be displayed in the top left.
+                    unsolved questions will be displayed in the top right.
                 </Typography>
             </Grid>
             <Grid item xs={8} sx={{

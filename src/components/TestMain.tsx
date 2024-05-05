@@ -1,5 +1,5 @@
 import {Button, Grid, Typography} from "@mui/material";
-import {checkAnswer, getUnsolvedTests} from "../utils/baseFuncs.tsx";
+import {checkAnswer} from "../utils/baseFuncs.tsx";
 import AceEditor from "react-ace";
 import 'ace-builds/src-noconflict/mode-yaml';
 import 'ace-builds/src-noconflict/theme-monokai';
@@ -17,7 +17,6 @@ interface TestMainProps {
     };
     setSolvedFunc: (test: TestState) => void;
     newTestFunc: () => void;
-    resetTestListFunc: () => void;
     yamlTests: {
         name: string;
         yaml: string;
@@ -33,51 +32,12 @@ const TestMain = ({
                       yamlTest,
                       setSolvedFunc,
                       newTestFunc,
-                      resetTestListFunc,
-                      yamlTests
                   }: TestMainProps) => {
     const inputValue = yamlInput
     const setInputValue = setYamlInput
-    const resetTestList = resetTestListFunc
     const test = yamlTest
     const setSolved = setSolvedFunc
     const newTest = newTestFunc
-    const tests = yamlTests
-
-    const TopButtons = () => {
-        return (
-            <Grid item xs={12} sx={{
-                width: '100%'
-            }}>
-                <Grid container sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '100%',
-                }}>
-                    <Grid item xs={3} sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        py: 2
-                    }}>
-                        <Typography variant={"body1"}>
-                            {getUnsolvedTests(tests).length} tests remaining
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={3} sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        py: 2
-                    }}>
-                        <Button variant="contained" onClick={() => resetTestList()}>Reset</Button>
-                    </Grid>
-                </Grid>
-            </Grid>
-        )
-    }
 
     const Description = () => {
         return (
@@ -117,21 +77,7 @@ const TestMain = ({
         )
     }
 
-    const AnswerCorrect = () => {
-        return (
-            <Grid item xs={12} sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}>
-                {test.solved && <Typography variant="h2" color={'green'}>Correct</Typography>}
-            </Grid>
-        )
-    }
-
     const BottomButtons = () => {
-        if (!test.solved) {
             return (
                 <Grid container sx={{
                     display: 'flex',
@@ -139,7 +85,7 @@ const TestMain = ({
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}>
-                    <Grid item xs={3} sx={{
+                    <Grid item xs={4} sx={{
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
@@ -148,14 +94,8 @@ const TestMain = ({
                         {test ? <Button variant="contained"
                                         onClick={() => setInputValue(test.yaml)}>Fill</Button> : null}
                     </Grid>
-                    <Grid item xs={3} sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}>
-                        <Button variant="contained" onClick={() => setInputValue('')}>Clear</Button>
-                    </Grid>
-                    <Grid item xs={3} sx={{
+
+                    <Grid item xs={4} sx={{
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
@@ -172,17 +112,6 @@ const TestMain = ({
                     </Grid>
                 </Grid>
             )
-        } else {
-            return (
-                <Grid item xs={12} sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                    <Button variant="contained" onClick={() => newTest()}>Next</Button>
-                </Grid>
-            )
-        }
     }
 
     return (
@@ -192,11 +121,33 @@ const TestMain = ({
             justifyContent: 'center',
             alignItems: 'center',
         }} spacing={2}>
-            <TopButtons/>
-            <Description/>
-            <Editor/>
-            <AnswerCorrect/>
-            <BottomButtons/>
+            {!test.solved ? (
+                <>
+                    <Description/>
+                    <Editor/>
+                    <BottomButtons/>
+                </>
+            ) : (
+                <>
+                    <Grid item xs={12} sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                        {test.solved && <Typography variant="h2" color={'green'}>Correct</Typography>}
+                    </Grid>
+                    <Grid item xs={12} sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                        <Button variant="contained" onClick={() => newTest()}>Next</Button>
+                    </Grid>
+                </>
+            )
+            }
+
         </Grid>
     )
 }

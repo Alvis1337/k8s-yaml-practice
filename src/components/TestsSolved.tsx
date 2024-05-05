@@ -19,8 +19,8 @@ const TestsSolved = ({resetTestListFunc}: TestsSolvedProps) => {
                 alignItems: 'center',
                 py: 2
             }}>
-                <Typography variant="h2" color={'green'}>
-                    All test completed
+                <Typography variant="h2" color={'green'} textAlign={"center"}>
+                    All tests completed
                 </Typography>
             </Grid>
             <Grid item xs={12} sx={{

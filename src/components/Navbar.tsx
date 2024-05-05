@@ -7,33 +7,22 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import {setTestStateAllSolved} from "../store/silces/testListSlice.tsx";
-import {useAppDispatch} from "../store/hooks.ts";
-
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import {setTestStateAllSolved, setTestStateAllUnsolved} from "../store/silces/testListSlice.tsx";
+import {useAppDispatch, useAppSelector} from "../store/hooks.ts";
+import {getUnsolvedTests} from "../utils/baseFuncs.tsx";
 
 const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+    const tests = useAppSelector((state) => state.testState.testList)
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
-    };
-
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
-    };
-
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
     };
 
     const dispatch = useAppDispatch();
@@ -42,24 +31,6 @@ const Navbar = () => {
         <AppBar position="static" sx={{minWidth: '100%'}}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="#app-bar-with-responsive-menu"
-                        sx={{
-                            mr: 2,
-                            display: {xs: 'none', md: 'flex'},
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        LOGO
-                    </Typography>
-
                     <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
                         <IconButton
                             size="large"
@@ -89,69 +60,54 @@ const Navbar = () => {
                                 display: {xs: 'block', md: 'none'},
                             }}
                         >
-                                <MenuItem key={'setTestStateAllSolved'} onClick={() => dispatch(setTestStateAllSolved())}>
-                                    <Typography textAlign="center">Solve All</Typography>
-                                </MenuItem>
+                            <MenuItem key={'setTestStateAllSolved'} onClick={() => dispatch(setTestStateAllSolved())}>
+                                <Typography textAlign="center">Solve All</Typography>
+                            </MenuItem>
+                            <MenuItem key={'setTestStateAllSolved'} onClick={() => dispatch(setTestStateAllUnsolved())}>
+                                <Typography textAlign="center">Reset</Typography>
+                            </MenuItem>
+                            <MenuItem key={'setTestStateAllSolved'} onClick={() => {
+                                localStorage.clear()
+                                window.location.reload()
+                            }}>
+                                <Typography textAlign="center">Restart</Typography>
+                            </MenuItem>
                         </Menu>
                     </Box>
-                    <AdbIcon sx={{display: {xs: 'flex', md: 'none'}, mr: 1}}/>
-                    <Typography
-                        variant="h5"
-                        noWrap
-                        component="a"
-                        href="#app-bar-with-responsive-menu"
-                        sx={{
-                            mr: 2,
-                            display: {xs: 'flex', md: 'none'},
-                            flexGrow: 1,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        LOGO
-                    </Typography>
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
-                            <Button
-                                key={'teehee'}
-                                onClick={() => dispatch(setTestStateAllSolved())}
-                                sx={{my: 2, color: 'white', display: 'block'}}
-                            >
-                                Solve All
-                            </Button>
+                        <Button
+                            key={'solve_all'}
+                            onClick={() => dispatch(setTestStateAllSolved())}
+                            sx={{my: 2, color: 'white', display: 'block'}}
+                        >
+                            Solve All
+                        </Button>
+                        <Button
+                            key={'reset_all'}
+                            onClick={() => dispatch(setTestStateAllUnsolved())}
+                            sx={{my: 2, color: 'white', display: 'block'}}
+                        >
+                            Unsolve All
+                        </Button>
+                        <Button
+                            key={'reset_all'}
+                            onClick={() => {
+                                localStorage.clear()
+                                window.location.reload()
+                            }}
+                            sx={{my: 2, color: 'white', display: 'block'}}
+                        >
+                            Restart
+                        </Button>
                     </Box>
 
-                    <Box sx={{flexGrow: 0}}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{mt: '45px'}}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                    </Box>
+                    {getUnsolvedTests(tests).length !== 0 && (
+                        <Box sx={{flexGrow: 0}}>
+                            <Typography variant={"body1"}>
+                                {getUnsolvedTests(tests).length} tests remaining
+                            </Typography>
+                        </Box>
+                    )}
                 </Toolbar>
             </Container>
         </AppBar>
