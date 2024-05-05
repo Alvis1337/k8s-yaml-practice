@@ -4,7 +4,7 @@ import {yamlTests} from "../utils/yamlTests";
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-yaml';
 import 'ace-builds/src-noconflict/theme-monokai';
-
+import {checkAnswer} from "../utils/baseFuncs.tsx";
 
 const Home = () => {
     const [inputValue, setInputValue] = useState('')
@@ -19,10 +19,6 @@ const Home = () => {
     const startTest = () => {
         setTestList(yamlTests)
         setTest(yamlTests[0])
-    }
-
-    const checkAnswer = (input: string, test: string) => {
-        return input === test
     }
 
     const setSolved = (test: { name: string; yaml?: string; description?: string; solved?: boolean; }) => {
