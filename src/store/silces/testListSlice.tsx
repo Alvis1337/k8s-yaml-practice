@@ -15,15 +15,15 @@ export const testListSlice = createSlice({
     name: 'testList',
     initialState,
     reducers: {
-        setTest: (state, action) => {
+        setTestState: (state, action) => {
             state.test = action.payload
         },
-        setTestList: (state, action) => {
+        setTestListState: (state, action) => {
             state.testList = action.payload
         }
     }
 })
 
-export const {setTestList, setTest} = testListSlice.actions
+export const {setTestListState, setTestState} = testListSlice.actions
 
 export default testListSlice.reducer

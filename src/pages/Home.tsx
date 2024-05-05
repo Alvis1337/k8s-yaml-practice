@@ -1,11 +1,13 @@
 import {Grid} from "@mui/material"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {yamlTests} from "../utils/yamlTests";
 import {getUnsolvedTests} from "../utils/baseFuncs.tsx";
 import {TestState} from "../utils/testTypes.ts";
 import TestMain from "../components/TestMain.tsx";
 import TestBegin from "../components/TestBegin.tsx";
 import TestsSolved from "../components/TestsSolved.tsx";
+import {useDispatch} from "react-redux";
+import {setTestListState, setTestState} from "../store/silces/testListSlice.tsx";
 
 const Home = () => {
     const [inputValue, setInputValue] = useState('')
@@ -59,6 +61,12 @@ const Home = () => {
             setTest(yamlTests[0])
         }
     }
+
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(setTestState(test))
+        dispatch(setTestListState(testList))
+    }, [dispatch, test, testList]);
 
     return (
         <Grid container sx={{
