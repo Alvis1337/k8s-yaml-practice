@@ -4,3 +4,11 @@ export interface JsonTest {
     metadata: Record<string, unknown>;
     spec?: Record<string, unknown>;
 }
+
+export interface TestState {
+    name: string;
+    yaml: string;
+    description: string;
+    solved: boolean;
+    categories: string[];
+}
