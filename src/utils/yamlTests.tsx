@@ -13,7 +13,6 @@ import {
     pvcYamlTest1, pvcYamlTest2,
     pvYamlTest1,
     pvYamlTest2,
-    pvYamlTest3,
     resourcequotaYamlTest1, resourcequotaYamlTest2,
     secretYamlTest1, secretYamlTest2,
     serviceYamlTest1, serviceYamlTest2,
@@ -32,13 +31,6 @@ export const yamlTests = [
     {
         name: 'pv-yaml-test-2',
         yaml: implodeJsonToYaml(pvYamlTest2),
-        description: 'Create a PV with 8Gi of storage, ReadWriteOnce access mode, a Delete reclaim policy, with a name of pv-test-yaml that uses the pv-storage-class storage class.',
-        solved: false,
-        categories: ['pv']
-    },
-    {
-        name: 'pv-yaml-test-3',
-        yaml: implodeJsonToYaml(pvYamlTest3),
         description: 'Create a PersistentVolume named \'localpv\' in the \'pvdemo\' namespace in Kubernetes with the storage class \'localdisk\'. The PersistentVolume\'s reclaim policy is set to \'Recycle\'. The storage capacity is \'1Gi\' and the access mode is \'ReadWriteOnce\'. The volume is hosted on the local filesystem at the path \'/volumes/data\'.',
         solved: false,
         categories: ['pv']

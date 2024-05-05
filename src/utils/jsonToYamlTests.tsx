@@ -18,22 +18,6 @@ export const pvYamlTest2 = {
     apiVersion: 'v1',
     kind: 'PersistentVolume',
     metadata: {
-        name: 'pv-test-yaml',
-    },
-    spec: {
-        capacity: {
-            storage: '8Gi',
-        },
-        accessModes: ['ReadWriteOnce'],
-        persistentVolumeReclaimPolicy: 'Delete',
-        storageClassName: 'pv-storage-class',
-    },
-};
-
-export const pvYamlTest3 = {
-    apiVersion: 'v1',
-    kind: 'PersistentVolume',
-    metadata: {
         namespace: 'pvdemo',
         name: 'localpv',
     },

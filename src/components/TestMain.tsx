@@ -1,9 +1,9 @@
 import {Button, Grid, Typography} from "@mui/material";
 import {checkAnswer, getUnsolvedTests} from "../utils/baseFuncs.tsx";
-import {yamlTests} from "../utils/yamlTests.tsx";
 import AceEditor from "react-ace";
 import 'ace-builds/src-noconflict/mode-yaml';
 import 'ace-builds/src-noconflict/theme-monokai';
+import {TestState} from "../utils/testTypes.ts";
 
 interface TestMainProps {
     yamlInput: string;
@@ -15,10 +15,16 @@ interface TestMainProps {
         solved: boolean;
         categories: string[];
     };
-    setSolvedFunc: (test: { name: string; yaml?: string; description?: string; solved?: boolean; }) => void;
+    setSolvedFunc: (test: TestState) => void;
     newTestFunc: () => void;
     resetTestListFunc: () => void;
-    solveAllTestsFunc: () => void;
+    yamlTests: {
+        name: string;
+        yaml: string;
+        description: string;
+        solved: boolean;
+        categories: string[];
+    }[];
 }
 
 const TestMain = ({
@@ -28,7 +34,7 @@ const TestMain = ({
                       setSolvedFunc,
                       newTestFunc,
                       resetTestListFunc,
-                      solveAllTestsFunc
+                      yamlTests
                   }: TestMainProps) => {
     const inputValue = yamlInput
     const setInputValue = setYamlInput
@@ -36,7 +42,7 @@ const TestMain = ({
     const test = yamlTest
     const setSolved = setSolvedFunc
     const newTest = newTestFunc
-    const solveAllTests = solveAllTestsFunc
+    const tests = yamlTests
 
     const TopButtons = () => {
         return (
@@ -57,7 +63,7 @@ const TestMain = ({
                         py: 2
                     }}>
                         <Typography variant={"body1"}>
-                            {getUnsolvedTests(yamlTests).length} tests remaining
+                            {getUnsolvedTests(tests).length} tests remaining
                         </Typography>
                     </Grid>
                     <Grid item xs={3} sx={{
@@ -67,14 +73,6 @@ const TestMain = ({
                         py: 2
                     }}>
                         <Button variant="contained" onClick={() => resetTestList()}>Reset</Button>
-                    </Grid>
-                    <Grid item xs={3} sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        py: 2
-                    }}>
-                        <Button variant="contained" onClick={() => solveAllTests()}>Solve All</Button>
                     </Grid>
                 </Grid>
             </Grid>
@@ -133,7 +131,7 @@ const TestMain = ({
     }
 
     const BottomButtons = () => {
-        if(!test.solved) {
+        if (!test.solved) {
             return (
                 <Grid container sx={{
                     display: 'flex',
@@ -163,7 +161,14 @@ const TestMain = ({
                         alignItems: 'center',
                     }}>
                         <Button variant="contained"
-                                onClick={() => checkAnswer(inputValue, test.yaml) ? setSolved(test) : null}>Check</Button>
+                                onClick={() => {
+                                    if (checkAnswer(inputValue, test.yaml)) {
+                                        console.log('im trying to set solved')
+                                        setSolved(test)
+                                    }
+                                }}>
+                            Check
+                        </Button>
                     </Grid>
                 </Grid>
             )

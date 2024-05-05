@@ -12,8 +12,9 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import {setTestStateAllSolved} from "../store/silces/testListSlice.tsx";
+import {useAppDispatch} from "../store/hooks.ts";
 
-const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const Navbar = () => {
@@ -34,6 +35,8 @@ const Navbar = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const dispatch = useAppDispatch();
 
     return (
         <AppBar position="static" sx={{minWidth: '100%'}}>
@@ -86,11 +89,9 @@ const Navbar = () => {
                                 display: {xs: 'block', md: 'none'},
                             }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
+                                <MenuItem key={'setTestStateAllSolved'} onClick={() => dispatch(setTestStateAllSolved())}>
+                                    <Typography textAlign="center">Solve All</Typography>
                                 </MenuItem>
-                            ))}
                         </Menu>
                     </Box>
                     <AdbIcon sx={{display: {xs: 'flex', md: 'none'}, mr: 1}}/>
@@ -113,15 +114,13 @@ const Navbar = () => {
                         LOGO
                     </Typography>
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
-                        {pages.map((page) => (
                             <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
+                                key={'teehee'}
+                                onClick={() => dispatch(setTestStateAllSolved())}
                                 sx={{my: 2, color: 'white', display: 'block'}}
                             >
-                                {page}
+                                Solve All
                             </Button>
-                        ))}
                     </Box>
 
                     <Box sx={{flexGrow: 0}}>

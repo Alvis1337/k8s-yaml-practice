@@ -1,6 +1,6 @@
 import {Grid} from "@mui/material";
 import {Outlet} from "react-router-dom";
-// import Navbar from "../components/Navbar.tsx";
+import Navbar from "../components/Navbar.tsx";
 
 const Layout = () => {
     return (
@@ -8,7 +8,7 @@ const Layout = () => {
             display: 'flex',
             flexDirection: 'column',
         }}>
-                {/*<Navbar/>*/}
+                <Navbar/>
                 <Outlet/>
         </Grid>
 

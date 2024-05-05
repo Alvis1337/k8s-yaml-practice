@@ -2,71 +2,76 @@ import {Grid} from "@mui/material"
 import {useEffect, useState} from "react";
 import {yamlTests} from "../utils/yamlTests";
 import {getUnsolvedTests} from "../utils/baseFuncs.tsx";
-import {TestState} from "../utils/testTypes.ts";
 import TestMain from "../components/TestMain.tsx";
 import TestBegin from "../components/TestBegin.tsx";
 import TestsSolved from "../components/TestsSolved.tsx";
-import {useDispatch} from "react-redux";
-import {setTestListState, setTestState} from "../store/silces/testListSlice.tsx";
+import {
+    setTestListState,
+    setTestState,
+    setTestStateAllUnsolved,
+    setTestStateSolved
+} from "../store/silces/testListSlice.tsx";
+import {useAppDispatch, useAppSelector} from "../store/hooks.ts";
+import {TestState} from "../utils/testTypes.ts";
 
 const Home = () => {
+    const dispatch = useAppDispatch()
+
     const [inputValue, setInputValue] = useState('')
-    const [test, setTest] = useState<TestState>({
-        name: '',
-        yaml: '',
-        description: '',
-        solved: false,
-        categories: ['']
-    })
-    const [testList, setTestList] = useState(yamlTests)
+
+    const test = useAppSelector((state) => state.testState.test)
+
+    const [renderedTest, setRenderedTest] = useState(test)
+
+    const testList = useAppSelector((state) => state.testState.testList)
+
+    // need to keep track of the rendered test, so we can update the component when the test changes
+    useEffect(() => {
+        setRenderedTest(test)
+    }, [test])
 
     const startTest = () => {
-        setTestList(yamlTests)
-        setTest(yamlTests[0])
+        dispatch(setTestListState(yamlTests))
+        dispatch(setTestState(yamlTests[0]))
     }
 
-    const setSolved = (test: { name: string; yaml?: string; description?: string; solved?: boolean; }) => {
-        const newTestList = testList.map((t) => {
-            if (t.name === test.name) {
-                t.solved = true
-            }
-            return t
-        })
-        setTestList(newTestList)
+    const setSolved = (test: TestState) => {
+        dispatch(setTestStateSolved(test.name));
+        dispatch(setTestState({...test, solved: true}));
     }
 
     const resetTestList = () => {
         setInputValue('')
-        setTestList(yamlTests.map((t) => {
-            t.solved = false
-            return t
-        }))
+        dispatch(setTestStateAllUnsolved())
     }
 
-    const solveAllTests = () => {
-        const newTestList = testList.map((t) => {
-            t.solved = true
-            return t
-        })
-        setTestList(newTestList)
-    }
+    // if the current test gets solved, remove it fromt he testlist and set the next test
+    useEffect(() => {
+        if (test.solved) {
+            const newTestList = testList.filter((t) => t.name !== test.name)
+            dispatch(setTestListState(newTestList))
+            newTest()
+        }
+    }, []);
+
 
     const newTest = () => {
-        const unsolvedTests = getUnsolvedTests(yamlTests)
+        const unsolvedTests = getUnsolvedTests(testList)
         if (unsolvedTests.length > 0) {
-            setTest(unsolvedTests[0])
+            console.log('unsolved test length was larger than 0')
+            dispatch(setTestState(unsolvedTests[0]))
             setInputValue('')
         } else {
-            setTestList(yamlTests)
-            setTest(yamlTests[0])
+            console.log('unsolved test length was 0')
+            dispatch(setTestListState(testList))
+            dispatch(setTestState(yamlTests[0]))
         }
     }
 
-    const dispatch = useDispatch()
+    // if the test list is not the same as the yamlTests, update the test list
     useEffect(() => {
-        dispatch(setTestState(test))
         dispatch(setTestListState(testList))
-    }, [dispatch, test, testList]);
+    }, [testList, dispatch])
 
     return (
         <Grid container sx={{
@@ -83,15 +88,15 @@ const Home = () => {
                 py: 2
             }}>
                 {test.description === '' ? <TestBegin startTestFunc={startTest}/> : (
-                    getUnsolvedTests(yamlTests).length > 0 ? (
+                    getUnsolvedTests(testList).length > 0 ? (
                         <TestMain
                             yamlInput={inputValue}
                             setYamlInput={setInputValue}
-                            yamlTest={test}
+                            yamlTest={renderedTest}
                             setSolvedFunc={setSolved}
                             newTestFunc={newTest}
                             resetTestListFunc={resetTestList}
-                            solveAllTestsFunc={solveAllTests}
+                            yamlTests={testList}
                         />
                     ) : (
                         <TestsSolved resetTestListFunc={resetTestList}/>
