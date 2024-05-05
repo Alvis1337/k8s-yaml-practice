@@ -9,7 +9,7 @@ const persistConfig = {
 }
 
 const rootReducer = combineReducers({
-    authState: testListSlice.reducer,
+    testState: testListSlice.reducer,
 })
 
 const persistedReducer = persistReducer(
