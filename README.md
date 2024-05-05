@@ -9,3 +9,4 @@ TODOS:
 - a way to remove tests
 - a way to edit tests
 - a way to view tests
+- add ability to see the answer and then reset the input field back to its contents before the user clicked the fill button

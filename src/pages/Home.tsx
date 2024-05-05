@@ -99,82 +99,98 @@ const Home = () => {
                                     {test.description}
                                 </Typography>
                             </Grid>
+                            <Grid item xs={12} sx={{
+                                py: 2,
+                            }}>
+                                <AceEditor
+                                    mode="yaml"
+                                    theme="monokai"
+                                    onChange={setInputValue}
+                                    name="UNIQUE_ID_OF_DIV"
+                                    editorProps={{$blockScrolling: true}}
+                                    value={inputValue}
+                                    setOptions={{
+                                        showLineNumbers: true,
+                                        tabSize: 2,
+                                    }}
+                                />
+
+                            </Grid>
+                            <Grid item xs={12} sx={{
+                                py: 2
+                            }}>
+                                {test.solved && <Typography variant="h2" color={'green'}>Correct</Typography>}
+                            </Grid>
+
+                            {!test.solved ? (
+                                <Grid container sx={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}>
+                                    <Grid item xs={3} sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        py: 2
+                                    }}>
+                                        {test ? <Button variant="contained"
+                                                        onClick={() => setInputValue(test.yaml)}>Fill</Button> : null}
+                                    </Grid>
+                                    <Grid item xs={3} sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        py: 2
+                                    }}>
+                                        <Button variant="contained" onClick={() => setInputValue('')}>Clear</Button>
+                                    </Grid>
+                                    <Grid item xs={3} sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        py: 2
+                                    }}>
+                                        <Button variant="contained"
+                                                onClick={() => checkAnswer(inputValue, test.yaml) ? setSolved(test) : null}>Check</Button>
+                                    </Grid>
+                                </Grid>
+                            ) : (
+                                <Grid item xs={12} sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    py: 2
+                                }}>
+                                    <Button variant="contained" onClick={() => newTest()}>Next</Button>
+                                </Grid>
+                            )}
                         </>
                         :
-                        <Grid item xs={8} sx={{
-                            py: 2
-                        }}>
-                            <Button variant="contained" onClick={() => startTest()}>Begin</Button>
-                        </Grid>
+                        <>
+                            <Grid item xs={8} sx={{
+                                py: 2
+                            }}>
+                                <Typography variant="body1">Click the button below to begin. Once you are finished typing
+                                    the yaml for the test press "Check" below to check your answer. If your answer is
+                                    correct it will say "Correct" in green letters. If it is incorrect, the screen will not
+                                    change. To solve the question click the "Fill" button to see the solution. To move on
+                                    from the current question and save it for later, press the "Next" button. The number of
+                                    unsolved questions will be displayed in the top left.
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={8} sx={{
+                                py: 2,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                            }}>
+                                <Button variant="contained" onClick={() => startTest()}>Begin</Button>
+                            </Grid>
+
+                        </>
                     }
-
-                    <Grid item xs={12} sx={{
-                        py: 2,
-                    }}>
-                        <AceEditor
-                            mode="yaml"
-                            theme="monokai"
-                            onChange={setInputValue}
-                            name="UNIQUE_ID_OF_DIV"
-                            editorProps={{$blockScrolling: true}}
-                            value={inputValue}
-                            setOptions={{
-                                showLineNumbers: true,
-                                tabSize: 2,
-                            }}
-                        />
-
-                    </Grid>
-                    <Grid item xs={12} sx={{
-                        py: 2
-                    }}>
-                        {test.solved && <Typography variant="h2" color={'green'}>Correct</Typography>}
-                    </Grid>
-
-                    {!test.solved ? (
-                        <Grid container sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}>
-                            <Grid item xs={3} sx={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                py: 2
-                            }}>
-                                {test ? <Button variant="contained"
-                                                onClick={() => setInputValue(test.yaml)}>Fill</Button> : null}
-                            </Grid>
-                            <Grid item xs={3} sx={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                py: 2
-                            }}>
-                                <Button variant="contained" onClick={() => setInputValue('')}>Clear</Button>
-                            </Grid>
-                            <Grid item xs={3} sx={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                py: 2
-                            }}>
-                                <Button variant="contained"
-                                        onClick={() => checkAnswer(inputValue, test.yaml) ? setSolved(test) : null}>Check</Button>
-                            </Grid>
-                        </Grid>
-                    ) : (
-                        <Grid item xs={12} sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            py: 2
-                        }}>
-                            <Button variant="contained" onClick={() => newTest()}>Next</Button>
-                        </Grid>
-                    )}
 
                 </>
             ) : (
