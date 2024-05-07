@@ -4,7 +4,7 @@ TODOS:
 - ~~implement a json to yaml converter. this will help me gain a better understading of the structuring and make it so much more readable.~~
 - implement a yaml to json converter.
 - select a test from a dropdown
-~~- categories for tests~~
+- ~~- categories for tests~~
 - a way to add tests
 - a way to remove tests
 - a way to edit tests
