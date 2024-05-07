@@ -14,9 +14,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+
 #root {
   width: 100%;
-  height: 100vh;
+  min-height: 100%;
+  overflow: auto;
 }
 
 a {
@@ -35,6 +37,7 @@ body {
   place-items: center;
   width: 100%;
   min-height: 100vh;
+  background-color: #242424;
 }
 
 h1 {

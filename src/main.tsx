@@ -12,6 +12,7 @@ import Layout from "./pages/Layout.tsx";
 import {Provider} from "react-redux";
 import {persistor, store} from "./store/store.ts";
 import {PersistGate} from "redux-persist/integration/react";
+import Tests from "./pages/Tests.tsx";
 
 const router = createBrowserRouter([
     {
@@ -29,6 +30,13 @@ const router = createBrowserRouter([
                     return null
                 },
             },
+            {
+                path: "/tests",
+                element: <Tests/>,
+                loader: async () => {
+                    return null
+                },
+            }
         ],
     },
 ]);

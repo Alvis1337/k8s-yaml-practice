@@ -28,7 +28,7 @@ const Navbar = () => {
     const dispatch = useAppDispatch();
 
     return (
-        <AppBar position="static" sx={{minWidth: '100%'}}>
+        <AppBar position="fixed" sx={{minWidth: '100%'}}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
@@ -63,10 +63,10 @@ const Navbar = () => {
                             <MenuItem key={'setTestStateAllSolved'} onClick={() => dispatch(setTestStateAllSolved())}>
                                 <Typography textAlign="center">Solve All</Typography>
                             </MenuItem>
-                            <MenuItem key={'setTestStateAllSolved'} onClick={() => dispatch(setTestStateAllUnsolved())}>
+                            <MenuItem key={'resetTestStateAllSolved'} onClick={() => dispatch(setTestStateAllUnsolved())}>
                                 <Typography textAlign="center">Reset</Typography>
                             </MenuItem>
-                            <MenuItem key={'setTestStateAllSolved'} onClick={() => {
+                            <MenuItem key={'restartTests'} onClick={() => {
                                 localStorage.clear()
                                 window.location.reload()
                             }}>
@@ -90,7 +90,7 @@ const Navbar = () => {
                             Unsolve All
                         </Button>
                         <Button
-                            key={'reset_all'}
+                            key={'reset_test'}
                             onClick={() => {
                                 localStorage.clear()
                                 window.location.reload()
