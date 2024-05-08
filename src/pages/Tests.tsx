@@ -11,7 +11,7 @@ const Tests = () => {
     }
 
     const testList = useAppSelector((state) => state.testState.testList)
-    // const currentTest = useAppSelector((state) => state.testState.test)
+    const currentTest = useAppSelector((state) => state.testState.test)
 
     return (
         <Grid container spacing={2} sx={{
@@ -31,8 +31,7 @@ const Tests = () => {
                     }}>
                         <Card sx={{
                             backgroundColor: test.solved ? 'rgba(0, 255, 0, 0.3)' : 'rgba(255, 0, 0, 0.3)',
-                            border: '2px 2px 2px 2px',
-                            // TODO: if it is the currently selected test put a thin white border around it, if not do nothing:
+                            border: currentTest.name === test.name ? '2px solid white' : 'none',
                             width: '100%',
                             minHeight: 200,
                             display: 'flex',
@@ -54,8 +53,25 @@ const Tests = () => {
                                 justifyContent: 'start',
                                 //     get the button at the bottom of the div
                                 alignItems: 'end',
+                                '&:active': {
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    border: 'none'
+                                }
                             }}>
-                                <Button onClick={() => selectTest(test)} fullWidth size="large">Select</Button>
+                                <Button disableRipple onClick={() => selectTest(test)} fullWidth size="large"
+                                sx={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                                    color: 'white',
+                                    '&:hover': {
+                                        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                                        border: 'none'
+                                    },
+                                    '&:active': {
+                                        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                        border: 'none'
+                                    }
+                                }}
+                                >Select</Button>
                             </CardActions>
                         </Card>
                     </Grid>

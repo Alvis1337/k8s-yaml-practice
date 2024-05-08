@@ -61,7 +61,7 @@ const theme = createTheme({
             main: '#BD8D24FF',
         },
         secondary: {
-            main: '#BD8D24FF',
+            main: '#FFFFFFFF',
         },
     },
     components: {
@@ -69,7 +69,7 @@ const theme = createTheme({
             defaultProps: {
                 sx: {
                     '&:hover': {
-                        backgroundColor: '#a33'
+                        backgroundColor: '#FFFFFF'
                     }
                 }
             }
@@ -90,6 +90,19 @@ const theme = createTheme({
                     '&:focus': {
                         outline: 'none'
                     },
+                    '&:hover': {
+                        backgroundColor: 'transparent'
+                    }
+                }
+            },
+            styleOverrides: {
+                root: {
+                    '&:focus': {
+                        outline: 'none'
+                    },
+                    '&:hover': {
+                        backgroundColor: 'transparent'
+                    }
                 }
             }
         },
