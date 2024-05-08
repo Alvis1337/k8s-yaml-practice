@@ -11,13 +11,14 @@ const Tests = () => {
     }
 
     const testList = useAppSelector((state) => state.testState.testList)
+    // const currentTest = useAppSelector((state) => state.testState.test)
 
     return (
         <Grid container spacing={2} sx={{
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'center',
-            p: '2rem',
+            p: '1rem',
             maxHeight: '60vh',
             overflow: 'auto'
         }}>
@@ -30,6 +31,8 @@ const Tests = () => {
                     }}>
                         <Card sx={{
                             backgroundColor: test.solved ? 'rgba(0, 255, 0, 0.3)' : 'rgba(255, 0, 0, 0.3)',
+                            border: '2px 2px 2px 2px',
+                            // TODO: if it is the currently selected test put a thin white border around it, if not do nothing:
                             width: '100%',
                             minHeight: 200,
                             display: 'flex',

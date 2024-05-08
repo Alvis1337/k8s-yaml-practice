@@ -1,11 +1,12 @@
 import {Button, Grid, Typography} from "@mui/material";
+import {setTestStateAllUnsolved} from "../store/silces/testListSlice.tsx";
+import {useAppDispatch} from "../store/hooks.ts";
 
-interface TestsSolvedProps {
-    resetTestListFunc: () => void;
-}
-
-const TestsSolved = ({resetTestListFunc}: TestsSolvedProps) => {
-    const resetTestList = resetTestListFunc
+const TestsSolved = () => {
+    const dispatch = useAppDispatch()
+    const resetTestList = () => {
+        dispatch(setTestStateAllUnsolved())
+    }
     return (
         <Grid container sx={{
             display: 'flex',

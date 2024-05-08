@@ -7,11 +7,9 @@ import TestBegin from "../components/TestBegin.tsx";
 import TestsSolved from "../components/TestsSolved.tsx";
 import {
     setTestListState,
-    setTestState, setTestStateAllUnsolved,
-    setTestStateSolved
+    setTestState,
 } from "../store/silces/testListSlice.tsx";
 import {useAppDispatch, useAppSelector} from "../store/hooks.ts";
-import {TestState} from "../utils/testTypes.ts";
 import Tests from "./Tests.tsx";
 
 const Home = () => {
@@ -25,15 +23,6 @@ const Home = () => {
     const startTest = () => {
         dispatch(setTestListState(yamlTests))
         dispatch(setTestState(yamlTests[0]))
-    }
-
-    const setSolved = (test: TestState) => {
-        dispatch(setTestStateSolved(test.name));
-        dispatch(setTestState({...test, solved: true}));
-    }
-
-    const resetTestList = () => {
-        dispatch(setTestStateAllUnsolved())
     }
 
     // if the test list is not the same as the yamlTests, update the test list
@@ -57,11 +46,9 @@ const Home = () => {
             }}>
                 {test.description === '' ? <TestBegin startTestFunc={startTest}/> : (
                     getUnsolvedTests(testList).length > 0 ? (
-                        <TestMain
-                            setSolvedFunc={setSolved}
-                        />
+                        <TestMain/>
                     ) : (
-                        <TestsSolved resetTestListFunc={resetTestList}/>
+                        <TestsSolved/>
                     )
                 )}
             </Grid>
